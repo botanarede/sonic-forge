@@ -118,48 +118,43 @@ const App: React.FC = () => {
           <div className="mb-4 text-6xl group-hover:scale-110 transition-transform duration-300">💿</div>
           <h2 className="text-2xl font-bold mb-2 text-white">Carregue seu Áudio</h2>
           <p className="text-gray-500">MP3, WAV suportados</p>
-          <input 
-            type="file" 
-            accept="audio/*" 
-            ref={fileInputRef} 
-            onChange={handleFileUpload} 
-            className="hidden" 
+          <input
+            type="file"
+            accept="audio/*"
+            ref={fileInputRef}
+            onChange={handleFileUpload}
+            className="hidden"
           />
         </div>
       );
     }
 
-    switch (currentPath) {
-      case '/':
-        return <HomePage {...{ audioState, hasFile, togglePlay, handleSeek, handleDownloadProcessed, formatTime }} />;
-      case '/ai':
-        return <AiPage audioBuffer={audioService.getRawBuffer()} />;
-      default:
-        return <HomePage {...{ audioState, hasFile, togglePlay, handleSeek, handleDownloadProcessed, formatTime }} />;
-    }
+    return (
+      <>
+        <div className="flex justify-center mb-4">
+          <div className="flex rounded-lg bg-gray-800 p-1">
+            <button onClick={() => navigate('/')} className={`px-4 py-2 text-sm font-medium rounded-md ${currentPath === '/' ? 'bg-neon-blue text-white' : 'text-gray-400 hover:bg-gray-700'}`}>Equalizer</button>
+            <button onClick={() => navigate('/ai')} className={`px-4 py-2 text-sm font-medium rounded-md ${currentPath === '/ai' ? 'bg-neon-blue text-white' : 'text-gray-400 hover:bg-gray-700'}`}>AI</button>
+          </div>
+        </div>
+        {currentPath === '/ai' ? <AiPage audioBuffer={audioService.getRawBuffer()} /> : <HomePage {...{ audioState, hasFile, togglePlay, handleSeek, handleDownloadProcessed, formatTime }} />}
+      </>
+    );
   };
 
   return (
     <Layout>
-      {
-        hasFile && (
-          <nav className="flex justify-center mb-4">
-            <button onClick={() => navigate('/')} className={`px-4 py-2 ${currentPath === '/' ? 'text-neon-blue' : ''}`}>Equalizer</button>
-            <button onClick={() => navigate('/ai')} className={`px-4 py-2 ${currentPath === '/ai' ? 'text-neon-blue' : ''}`}>AI</button>
-          </nav>
-        )
-      }
       {renderPage()}
       {
         hasFile && (
-            <div className="text-center">
-              <button 
-                onClick={() => window.location.reload()}
-                className="text-gray-500 hover:text-red-400 text-xs underline mt-8"
-              >
-                Carregar novo arquivo
-              </button>
-            </div>
+          <div className="text-center">
+            <button
+              onClick={() => window.location.reload()}
+              className="text-gray-500 hover:text-red-400 text-xs underline mt-8"
+            >
+              Carregar novo arquivo
+            </button>
+          </div>
         )
       }
     </Layout>

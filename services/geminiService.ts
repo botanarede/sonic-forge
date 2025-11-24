@@ -5,11 +5,11 @@ export const generateAudioTransform = async (
   prompt: string
 ): Promise<{ data: string; mimeType: string }> => {
   
-  if (!process.env.API_KEY) {
+  if (!import.meta.env.VITE_GEMINI_API_KEY) {
     throw new Error("API Key not found");
   }
 
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
 
   // 1. Prepare Audio Data
   // We need to convert AudioBuffer to a base64 string.
